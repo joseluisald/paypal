@@ -1,0 +1,9 @@
+# Pasta vendor
+/vendor/
+# Pasta vscode
+/.vscode/
+# Pasta idea
+/.idea/
+
+index.php
+config.php

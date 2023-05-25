@@ -1,0 +1,19 @@
+{
+    "name": "joseluisald/paypal",
+    "description": "Uma biblioteca fornece a integração com o PayPal",
+    "keywords": ["paypal", "payment"],
+    "license": "MIT",
+    "minimum-stability": "stable",
+    "prefer-stable": true,
+    "authors": [
+        {
+            "name": "José Luis",
+            "email": "joseluis.ald@hotmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Joseluisald\\Paypal\\": "src"
+        }
+    }
+}
