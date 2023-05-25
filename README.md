@@ -37,6 +37,7 @@ o Tipo (Sandbox ou Live), o ClientId e o ClientSecret.
 Obs*. Os 3 campos são obrigatórios
 
 ``` php
+require __DIR__.'/vendor/autoload.php';
 
 use joseluisald\Payment\Payment;
 
