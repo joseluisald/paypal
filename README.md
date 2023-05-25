@@ -1,4 +1,4 @@
-# JOSELUISALD | AB
+# JOSELUISALD | PAYPAL
 
 Esta biblioteca fornece a integração
 com o PayPal
