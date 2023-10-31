@@ -15,5 +15,9 @@
         "psr-4": {
             "Joseluisald\\Paypal\\": "src"
         }
-    }
+    },
+  "require": {
+    "ext-curl": "*",
+    "ext-json": "*"
+  }
 }

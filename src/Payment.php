@@ -2,7 +2,9 @@
 
 namespace Joseluisald\Paypal;
 
+use Exception;
 use Joseluisald\Paypal\Request;
+use stdClass;
 
 /**
  * Class Payment
@@ -49,6 +51,10 @@ Class Payment extends Request
      * @var $cardId
      */
     private $cardId;
+    /**
+     * @var $dataDebug
+     */
+    private $dataDebug;
 
 
     /**
@@ -154,9 +160,11 @@ Class Payment extends Request
     {
         $postAPI = $this->postAPI('/v3/vault/setup-tokens', $data, $this->tokenType, $this->accessToken);
 
+        $this->dataDebug = $data;
+
         if($postAPI->response)
         {
-            return $postAPI->response->id;
+            return $postAPI->response;
         }
         if($postAPI->error)
         {
@@ -170,25 +178,34 @@ Class Payment extends Request
      */
     public function paymentToken($idCard)
     {
-        $jayParsedAry = '{
-           "payment_source": {
-                "token": {
-                    "id": "'.$idCard.'",
-                    "type": "SETUP_TOKEN"
-                }
-            }
-        }';
+        $data = [
+            "payment_source" => [
+                "token" => [
+                    "id" => $idCard,
+                    "type" => "SETUP_TOKEN"
+                ]
+            ]
+        ];
 
-        $postAPI = $this->postAPI('/v3/vault/payment-tokens', $jayParsedAry, $this->tokenType, $this->accessToken);
+        $jsonSetup = json_encode($data);
 
-        if($postAPI->response)
+        if ($jsonSetup === false)
         {
-            return $postAPI->response;
+            return throw new Exception('Erro ao codificar em JSON: ' . json_last_error_msg());
         }
-        if($postAPI->error)
+        else
         {
-            $this->error = $postAPI->error;
-            return false;
+            $postAPI = $this->postAPI('/v3/vault/payment-tokens', $jsonSetup, $this->tokenType, $this->accessToken);
+
+            if($postAPI->response)
+            {
+                return $postAPI->response;
+            }
+            if($postAPI->error)
+            {
+                $this->error = $postAPI->error;
+                return false;
+            }
         }
     }
 
@@ -212,5 +229,13 @@ Class Payment extends Request
     public function getToken()
     {
         return $this->clientToken;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getData()
+    {
+        return $this->dataDebug;
     }
 }

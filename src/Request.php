@@ -35,7 +35,7 @@ class Request
      * @param String $content
      * @param String $tokenType
      * @param String $accessToken
-     * @return bool
+     * @return \stdClass
      */
     public function postAPI(String $url, $data, String $tokenType, String $accessToken, String $content = 'application/json')
     {
@@ -48,9 +48,9 @@ class Request
         $httpHeader[] = 'PayPal-Request-Id: '.$request_id;
         $httpHeader[] = 'Authorization: '.$tokenType.' '.$accessToken;
 
-        $postFields = '';
-        if($data)
-            $postFields = $data;
+        $httpHeaderStrings = array_map('strval', $httpHeader);
+
+        $postFields = !empty($data) ? $data : "";
 
         curl_setopt_array($curl, array(
             CURLOPT_URL => $this->url.$url,
@@ -63,7 +63,7 @@ class Request
             CURLOPT_SSL_VERIFYPEER => false,
             CURLOPT_CUSTOMREQUEST => 'POST',
             CURLOPT_POSTFIELDS => $postFields,
-            CURLOPT_HTTPHEADER => $httpHeader,
+            CURLOPT_HTTPHEADER => $httpHeaderStrings,
         ));
 
         curl_close($curl);
